@@ -3,7 +3,9 @@
 /* ── Reset & tokens ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
+/* ── Mode sombre (défaut) ── */
+:root,
+[data-theme="dark"] {
   --bg:        #0e0e0f;
   --bg-2:      #161618;
   --bg-3:      #1e1e21;
@@ -22,6 +24,28 @@
   --font-body:    'DM Sans', system-ui, sans-serif;
   --sidebar-w: 220px;
   --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Mode clair ── */
+[data-theme="light"] {
+  --bg:        #f5f4f0;
+  --bg-2:      #ffffff;
+  --bg-3:      #eeede9;
+  --border:    rgba(0,0,0,0.08);
+  --border-md: rgba(0,0,0,0.15);
+  --text:      #1a1a1a;
+  --text-2:    #5a5860;
+  --text-3:    #9896a0;
+  --accent:    #6246ea;
+  --accent-bg: rgba(98,70,234,0.08);
+  --red:       #c0392b;
+  --green:     #0F6E56;
+}
+
+/* ── Transition douce entre thèmes ── */
+body, .sidebar, .main-content, .task-item,
+.stat-card, .task-form, .search-input {
+  transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 body {
@@ -109,7 +133,59 @@ body {
   color: var(--red);
 }
 
-.sidebar-footer { padding-top: 16px; border-top: 1px solid var(--border); }
+.sidebar-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Theme toggle ── */
+.sidebar-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+}
+.theme-label {
+  font-size: 13px;
+  color: var(--text-3);
+}
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.theme-toggle-track {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-md);
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: padding 0.25s ease;
+}
+[data-theme="dark"]  .theme-toggle-track { padding-left: 2px; }
+[data-theme="light"] .theme-toggle-track { padding-left: 22px; }
+
+.theme-toggle-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--bg-2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
 
 .btn-clear {
   width: 100%;
@@ -289,7 +365,7 @@ body {
 .btn-ghost:hover { color: var(--text); }
 
 /* ── Task list ── */
-.task-section { }
+
 .task-list {
   list-style: none;
   display: flex;

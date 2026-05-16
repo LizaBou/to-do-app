@@ -1,13 +1,16 @@
 import { useState, useMemo } from "react";
 import { useTasks } from "./hooks/useTasks";
+import { useTheme } from "./hooks/useTheme";           // ← NOUVEAU
 import { FILTERS, filterTasks } from "./utils/constants";
 import TaskForm from "./components/TaskForm";
 import TaskItem from "./components/TaskItem";
 import StatsBar from "./components/StatsBar";
+import ThemeToggle from "./components/ThemeToggle";     // ← NOUVEAU
 import "./App.css";
 
 export default function App() {
   const { tasks, stats, createTask, updateTask, deleteTask, toggleTask, clearCompleted } = useTasks();
+  const { theme, toggle } = useTheme();                 // ← NOUVEAU
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
@@ -40,6 +43,14 @@ export default function App() {
         </nav>
 
         <div className="sidebar-footer">
+          {/* ← BOUTON TOGGLE ICI */}
+          <div className="sidebar-theme-row">
+            <span className="theme-label">
+              {theme === "dark" ? "Mode sombre" : "Mode clair"}
+            </span>
+            <ThemeToggle theme={theme} onToggle={toggle} />
+          </div>
+
           {stats.done > 0 && (
             <button className="btn-clear" onClick={clearCompleted}>
               Vider les tâches faites ({stats.done})
@@ -72,7 +83,6 @@ export default function App() {
         </header>
 
         <StatsBar stats={stats} />
-
         <TaskForm onSubmit={createTask} />
 
         <section className="task-section">
@@ -101,7 +111,8 @@ export default function App() {
 }
 
 const SearchIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", opacity: 0.4 }}>
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+    style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", opacity: 0.4 }}>
     <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
     <path d="M11 11l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
