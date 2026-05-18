@@ -475,3 +475,301 @@ body {
   .main-header { flex-direction: column; }
   .search-input { width: 100%; }
 }
+/* ============================================================
+   COLLE CE BLOC À LA FIN DE TON App.css
+   ============================================================ */
+
+/* ── Task item layout mis à jour ── */
+.task-main-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.task-item {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ── Badge sous-tâches ── */
+.tag--subtasks {
+  background: transparent;
+  border: 0.5px solid var(--border-md);
+  color: var(--text-3);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.15s, color 0.15s;
+}
+.tag--subtasks:hover { background: var(--bg-3); color: var(--text-2); }
+.tag--subtasks-done  { color: var(--green) !important; border-color: var(--green); }
+
+/* ── Bouton expand chevron ── */
+.action-btn--expand svg {
+  transition: transform 0.2s ease;
+}
+.action-btn--expand-open svg {
+  transform: rotate(180deg);
+}
+
+/* ── Sous-tâche liste ── */
+.subtask-list {
+  padding: 10px 14px 6px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 0.5px solid var(--border);
+  margin-top: 10px;
+  animation: slideIn 0.18s ease-out;
+}
+
+/* ── Barre de progression sous-tâches ── */
+.subtask-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.subtask-progress-track {
+  flex: 1;
+  height: 3px;
+  background: var(--bg-3);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.subtask-progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+.subtask-progress-label {
+  font-size: 11px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* ── Une sous-tâche ── */
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-radius: 6px;
+}
+.subtask-item--done .subtask-text {
+  text-decoration: line-through;
+  color: var(--text-3);
+  opacity: 0.6;
+}
+
+.subtask-check {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border-md);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #fff;
+  transition: background 0.15s, border-color 0.15s;
+}
+.subtask-check:hover { border-color: var(--green); }
+.subtask-check--checked { background: var(--green); border-color: var(--green); }
+
+.subtask-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-2);
+  cursor: default;
+}
+
+.subtask-edit-input {
+  flex: 1;
+  font-size: 13px;
+  background: var(--bg-3);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: var(--text);
+  font-family: var(--font-body);
+  outline: none;
+}
+
+.subtask-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.subtask-item:hover .subtask-actions { opacity: 1; }
+
+.subtask-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  padding: 3px 5px;
+  border-radius: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+.subtask-action-btn:hover { background: var(--bg-3); color: var(--text); }
+.subtask-action-btn--delete:hover { color: var(--red); }
+
+/* ── Champ d'ajout sous-tâche ── */
+.subtask-add-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 4px 0;
+}
+.subtask-add-icon {
+  font-size: 14px;
+  color: var(--text-3);
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.subtask-add-input {
+  flex: 1;
+  font-size: 13px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--border-md);
+  color: var(--text-2);
+  font-family: var(--font-body);
+  outline: none;
+  padding: 2px 0;
+  transition: border-color 0.15s;
+}
+.subtask-add-input:focus {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+}
+.subtask-add-input::placeholder { color: var(--text-3); }
+/* ============================================================
+   COLLE CE BLOC À LA FIN DE TON App.css
+   ============================================================ */
+
+/* ── Sidebar views ── */
+.sidebar-views {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 0.5px solid var(--border);
+}
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  padding: 0 12px;
+  margin-bottom: 4px;
+}
+
+/* ── Stats page ── */
+.stats-page {
+  padding-bottom: 40px;
+}
+.stats-page-header {
+  margin-bottom: 28px;
+}
+.stats-page-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  line-height: 1.1;
+}
+.stats-page-sub {
+  font-size: 13px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ── KPI grid ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.kpi-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.kpi-icon { font-size: 18px; margin-bottom: 4px; }
+.kpi-value {
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--text);
+}
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ── Chart cards ── */
+.chart-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 12px;
+  margin-bottom: 16px;
+}
+.chart-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.chart-card--half {
+  margin-bottom: 0;
+}
+
+/* ── Tooltip ── */
+.chart-tooltip {
+  background: var(--bg-3);
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.chart-tooltip-label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-2);
+}
+
+/* ── Responsive stats ── */
+@media (max-width: 768px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .charts-row { grid-template-columns: 1fr; }
+}

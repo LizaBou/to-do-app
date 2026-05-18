@@ -16,6 +16,7 @@ export function useTasks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   }, [tasks]);
 
+  // ── CRUD Tâches ──
   const createTask = useCallback(({ text, priority = "medium", category = "Perso", dueDate = "" }) => {
     const task = {
       id: crypto.randomUUID(),
@@ -24,6 +25,7 @@ export function useTasks() {
       category,
       dueDate,
       done: false,
+      subtasks: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -55,13 +57,69 @@ export function useTasks() {
     setTasks((prev) => prev.filter((t) => !t.done));
   }, []);
 
-  const reorderTask = useCallback((fromIndex, toIndex) => {
-    setTasks((prev) => {
-      const arr = [...prev];
-      const [moved] = arr.splice(fromIndex, 1);
-      arr.splice(toIndex, 0, moved);
-      return arr;
-    });
+  // ── CRUD Sous-tâches ──
+  const addSubtask = useCallback((taskId, text) => {
+    if (!text.trim()) return;
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              subtasks: [
+                ...t.subtasks,
+                { id: crypto.randomUUID(), text: text.trim(), done: false },
+              ],
+              updatedAt: new Date().toISOString(),
+            }
+          : t
+      )
+    );
+  }, []);
+
+  const toggleSubtask = useCallback((taskId, subtaskId) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              subtasks: t.subtasks.map((s) =>
+                s.id === subtaskId ? { ...s, done: !s.done } : s
+              ),
+              updatedAt: new Date().toISOString(),
+            }
+          : t
+      )
+    );
+  }, []);
+
+  const deleteSubtask = useCallback((taskId, subtaskId) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              subtasks: t.subtasks.filter((s) => s.id !== subtaskId),
+              updatedAt: new Date().toISOString(),
+            }
+          : t
+      )
+    );
+  }, []);
+
+  const updateSubtask = useCallback((taskId, subtaskId, newText) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              subtasks: t.subtasks.map((s) =>
+                s.id === subtaskId ? { ...s, text: newText.trim() } : s
+              ),
+              updatedAt: new Date().toISOString(),
+            }
+          : t
+      )
+    );
   }, []);
 
   const stats = {
@@ -69,8 +127,22 @@ export function useTasks() {
     done: tasks.filter((t) => t.done).length,
     todo: tasks.filter((t) => !t.done).length,
     urgent: tasks.filter((t) => t.priority === "high" && !t.done).length,
-    progress: tasks.length ? Math.round((tasks.filter((t) => t.done).length / tasks.length) * 100) : 0,
+    progress: tasks.length
+      ? Math.round((tasks.filter((t) => t.done).length / tasks.length) * 100)
+      : 0,
   };
 
-  return { tasks, stats, createTask, updateTask, deleteTask, toggleTask, clearCompleted, reorderTask };
+  return {
+    tasks,
+    stats,
+    createTask,
+    updateTask,
+    deleteTask,
+    toggleTask,
+    clearCompleted,
+    addSubtask,
+    toggleSubtask,
+    deleteSubtask,
+    updateSubtask,
+  };
 }
