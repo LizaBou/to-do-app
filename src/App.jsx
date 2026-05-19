@@ -7,6 +7,7 @@ import TaskItem from "./components/TaskItem";
 import StatsBar from "./components/StatsBar";
 import ThemeToggle from "./components/ThemeToggle";
 import StatsPage from "./components/StatsPage";
+import ImportExportBar from "./components/ImportExportBar"; // ← NOUVEAU
 import "./App.css";
 
 export default function App() {
@@ -14,11 +15,12 @@ export default function App() {
     tasks, stats,
     createTask, updateTask, deleteTask, toggleTask, clearCompleted,
     addSubtask, toggleSubtask, deleteSubtask, updateSubtask,
+    importTasks, // ← NOUVEAU
   } = useTasks();
   const { theme, toggle } = useTheme();
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
-  const [view, setView] = useState("tasks"); // "tasks" | "stats"
+  const [view, setView] = useState("tasks");
 
   const filtered = useMemo(() => filterTasks(tasks, filter, search), [tasks, filter, search]);
 
@@ -69,12 +71,17 @@ export default function App() {
         )}
 
         <div className="sidebar-footer">
+
+          {/* ── Import / Export ── NOUVEAU */}
+          <ImportExportBar tasks={tasks} onImport={importTasks} />
+
           <div className="sidebar-theme-row">
             <span className="theme-label">
               {theme === "dark" ? "Mode sombre" : "Mode clair"}
             </span>
             <ThemeToggle theme={theme} onToggle={toggle} />
           </div>
+
           {stats.done > 0 && (
             <button className="btn-clear" onClick={clearCompleted}>
               Vider les tâches faites ({stats.done})

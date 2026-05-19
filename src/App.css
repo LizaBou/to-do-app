@@ -773,3 +773,70 @@ body {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .charts-row { grid-template-columns: 1fr; }
 }
+/* ============================================================
+   COLLE CE BLOC À LA FIN DE TON App.css
+   ============================================================ */
+
+/* ── Import / Export bar ── */
+.ie-bar {
+  padding: 10px 12px;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ie-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+.ie-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ie-label {
+  font-size: 11px;
+  color: var(--text-3);
+}
+.ie-btns {
+  display: flex;
+  gap: 6px;
+}
+.ie-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  border: 0.5px solid var(--border-md);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  flex: 1;
+  justify-content: center;
+}
+.ie-btn:hover {
+  background: var(--bg-3);
+  color: var(--text);
+}
+.ie-btn--import {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.ie-btn--import:hover {
+  background: var(--accent-bg);
+}
+.ie-feedback {
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 500;
+  animation: slideIn 0.2s ease-out;
+}

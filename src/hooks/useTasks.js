@@ -122,6 +122,17 @@ export function useTasks() {
     );
   }, []);
 
+  // ── Import (fusionne sans doublons) ──        ← NOUVEAU
+  const importTasks = useCallback((imported) => {
+    setTasks((prev) => {
+      const existingIds = new Set(prev.map((t) => t.id));
+      const newTasks = imported
+        .filter((t) => !existingIds.has(t.id))
+        .map((t) => ({ subtasks: [], ...t }));
+      return [...newTasks, ...prev];
+    });
+  }, []);
+
   const stats = {
     total: tasks.length,
     done: tasks.filter((t) => t.done).length,
@@ -144,5 +155,6 @@ export function useTasks() {
     toggleSubtask,
     deleteSubtask,
     updateSubtask,
+    importTasks,             // ← NOUVEAU
   };
 }
