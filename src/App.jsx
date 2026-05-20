@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { useTasks } from "./hooks/useTasks";
+import { useAuth } from "./hooks/useAuth";           // ← NOUVEAU
+import { useTasksDB } from "./hooks/useTasksDB";     // ← NOUVEAU (remplace useTasks)
 import { useTheme } from "./hooks/useTheme";
 import { FILTERS, filterTasks } from "./utils/constants";
 import TaskForm from "./components/TaskForm";
@@ -7,33 +8,51 @@ import TaskItem from "./components/TaskItem";
 import StatsBar from "./components/StatsBar";
 import ThemeToggle from "./components/ThemeToggle";
 import StatsPage from "./components/StatsPage";
-import ImportExportBar from "./components/ImportExportBar"; // ← NOUVEAU
+import ImportExportBar from "./components/ImportExportBar";
+import AuthPage from "./components/AuthPage";        // ← NOUVEAU
 import "./App.css";
 
 export default function App() {
+  // ── Auth ──
+  const { user, loading: authLoading, error: authError, login, register, logout } = useAuth();
+
+  // ── Tâches Supabase (remplace useTasks) ──
   const {
-    tasks, stats,
+    tasks, stats, loading: tasksLoading,
     createTask, updateTask, deleteTask, toggleTask, clearCompleted,
     addSubtask, toggleSubtask, deleteSubtask, updateSubtask,
-    importTasks, // ← NOUVEAU
-  } = useTasks();
+  } = useTasksDB(user?.id);
+
   const { theme, toggle } = useTheme();
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
-  const [view, setView] = useState("tasks");
+  const [view, setView]     = useState("tasks");
 
   const filtered = useMemo(() => filterTasks(tasks, filter, search), [tasks, filter, search]);
 
+  // ── Chargement initial de l'auth ──
+  if (authLoading) {
+    return (
+      <div className="splash">
+        <span className="logo-mark" style={{ fontSize: 32 }}>✦</span>
+      </div>
+    );
+  }
+
+  // ── Pas connecté → page login ──
+  if (!user) {
+    return <AuthPage onLogin={login} onRegister={register} error={authError} />;
+  }
+
+  // ── Connecté → app complète ──
   return (
     <div className="app-shell">
-      {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
           <span className="logo-mark">✦</span>
           <span className="logo-text">Taskflow</span>
         </div>
 
-        {/* Navigation principale */}
         <div className="sidebar-views">
           <button
             className={`nav-item ${view === "tasks" ? "nav-item--active" : ""}`}
@@ -49,7 +68,6 @@ export default function App() {
           </button>
         </div>
 
-        {/* Filtres (seulement sur vue tâches) */}
         {view === "tasks" && (
           <nav className="sidebar-nav">
             <p className="sidebar-section-label">Filtres</p>
@@ -72,8 +90,15 @@ export default function App() {
 
         <div className="sidebar-footer">
 
-          {/* ── Import / Export ── NOUVEAU */}
-          <ImportExportBar tasks={tasks} onImport={importTasks} />
+          {/* Utilisateur connecté */}
+          <div className="user-row">
+            <span className="user-avatar">{user.email[0].toUpperCase()}</span>
+            <span className="user-email">{user.email}</span>
+            <button className="logout-btn" onClick={logout} title="Se déconnecter">⏻</button>
+          </div>
+
+          {/* Import / Export */}
+          <ImportExportBar tasks={tasks} onImport={() => {}} />
 
           <div className="sidebar-theme-row">
             <span className="theme-label">
@@ -90,13 +115,10 @@ export default function App() {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="main-content">
 
-        {/* ── Vue Statistiques ── */}
         {view === "stats" && <StatsPage tasks={tasks} />}
 
-        {/* ── Vue Tâches ── */}
         {view === "tasks" && (
           <>
             <header className="main-header">
@@ -124,7 +146,12 @@ export default function App() {
             <TaskForm onSubmit={createTask} />
 
             <section className="task-section">
-              {filtered.length === 0 ? (
+              {tasksLoading ? (
+                <div className="empty-state">
+                  <span className="empty-icon">⋯</span>
+                  <p>Chargement…</p>
+                </div>
+              ) : filtered.length === 0 ? (
                 <div className="empty-state">
                   <span className="empty-icon">○</span>
                   <p>{search ? "Aucun résultat." : "Aucune tâche ici."}</p>
