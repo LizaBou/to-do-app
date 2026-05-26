@@ -1012,3 +1012,112 @@ body {
   flex-shrink: 0;
 }
 .logout-btn:hover { color: var(--red); }
+/* ============================================================
+   COLLE CE BLOC À LA FIN DE TON App.css
+   ============================================================ */
+
+/* ── Animation spin pour le loader ── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Wrapper avatar ── */
+.avatar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 0 8px;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 8px;
+}
+
+/* ── Bouton avatar ── */
+.avatar-btn {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--border-md);
+  background: var(--accent-bg);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+  padding: 0;
+}
+.avatar-btn:hover { border-color: var(--accent); }
+.avatar-btn:disabled { cursor: wait; opacity: 0.7; }
+
+/* ── Image avatar ── */
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* ── Initiale si pas d'image ── */
+.avatar-initial {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── Overlay caméra au hover ── */
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.avatar-btn:hover .avatar-overlay { opacity: 1; }
+
+/* ── Message d'erreur ── */
+.avatar-error {
+  font-size: 11px;
+  color: var(--red);
+  text-align: center;
+  max-width: 160px;
+}
+
+/* ── Mise à jour du user-row avec avatar ── */
+/* Remplace l'ancien .user-row par celui-ci */
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-3);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+.user-email {
+  font-size: 11px;
+  color: var(--text-2);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.logout-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  font-size: 15px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.logout-btn:hover { color: var(--red); }

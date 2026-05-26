@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import { useAuth } from "./hooks/useAuth";           // ← NOUVEAU
-import { useTasksDB } from "./hooks/useTasksDB";     // ← NOUVEAU (remplace useTasks)
+import { useAuth } from "./hooks/useAuth";
+import { useTasksDB } from "./hooks/useTasksDB";
 import { useTheme } from "./hooks/useTheme";
 import { FILTERS, filterTasks } from "./utils/constants";
 import TaskForm from "./components/TaskForm";
@@ -9,14 +9,12 @@ import StatsBar from "./components/StatsBar";
 import ThemeToggle from "./components/ThemeToggle";
 import StatsPage from "./components/StatsPage";
 import ImportExportBar from "./components/ImportExportBar";
-import AuthPage from "./components/AuthPage";        // ← NOUVEAU
+import AuthPage from "./components/AuthPage";
+import AvatarUpload from "./components/AvatarUpload";  // ← NOUVEAU
 import "./App.css";
 
 export default function App() {
-  // ── Auth ──
   const { user, loading: authLoading, error: authError, login, register, logout } = useAuth();
-
-  // ── Tâches Supabase (remplace useTasks) ──
   const {
     tasks, stats, loading: tasksLoading,
     createTask, updateTask, deleteTask, toggleTask, clearCompleted,
@@ -30,7 +28,6 @@ export default function App() {
 
   const filtered = useMemo(() => filterTasks(tasks, filter, search), [tasks, filter, search]);
 
-  // ── Chargement initial de l'auth ──
   if (authLoading) {
     return (
       <div className="splash">
@@ -39,12 +36,10 @@ export default function App() {
     );
   }
 
-  // ── Pas connecté → page login ──
   if (!user) {
     return <AuthPage onLogin={login} onRegister={register} error={authError} />;
   }
 
-  // ── Connecté → app complète ──
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -90,14 +85,16 @@ export default function App() {
 
         <div className="sidebar-footer">
 
-          {/* Utilisateur connecté */}
+          {/* ── Avatar photo de profil ── NOUVEAU */}
+          <AvatarUpload user={user} />
+
+          {/* ── Email + déconnexion ── */}
           <div className="user-row">
-            <span className="user-avatar">{user.email[0].toUpperCase()}</span>
             <span className="user-email">{user.email}</span>
             <button className="logout-btn" onClick={logout} title="Se déconnecter">⏻</button>
           </div>
 
-          {/* Import / Export */}
+          {/* ── Import / Export ── */}
           <ImportExportBar tasks={tasks} onImport={() => {}} />
 
           <div className="sidebar-theme-row">
